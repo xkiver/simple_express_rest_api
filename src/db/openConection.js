@@ -11,7 +11,7 @@ const sqlConfig = {
     port     : process.env.MYSQL_EXTERNAL_PORT
 }
 
-export default function openDBConnection() {
+function openDBConnection() {
   const connection = mysql.createConnection(sqlConfig);
   return {
     query( sql, args ) {
@@ -23,3 +23,5 @@ export default function openDBConnection() {
     }
   };
 }
+
+module.exports.openDBConnection = openDBConnection;

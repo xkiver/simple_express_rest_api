@@ -1,9 +1,9 @@
-const openDBConnection = require('../openConection');
+const { openDBConnection } = require('../openConection');
 
-export async function insertUser(name, email, country) {
+async function insertUser(name, email, country) {
     const db = openDBConnection();
     try {
-        let query = await db.query('INSER INTO users VALUES (?, ?, ?, ?, ?)', 
+        let query = await db.query('INSERT INTO users VALUES (?, ?, ?, ?, ?)', 
         [
             email, 
             name, 
@@ -31,7 +31,7 @@ export async function insertUser(name, email, country) {
     }  
 }
 
-export async function updateUser(name, email, country) {
+async function updateUser(name, email, country) {
     const db = openDBConnection();
     try {
         let query = await db.query(`UPDATE users 
@@ -64,3 +64,6 @@ export async function updateUser(name, email, country) {
         await db.close();
     }  
 }
+
+module.exports.insertUser = insertUser;
+module.exports.updateUser = updateUser;
