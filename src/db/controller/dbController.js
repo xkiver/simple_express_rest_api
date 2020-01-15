@@ -1,9 +1,9 @@
-const openDBConnection = require('../openConection');
+const { openDBConnection } = require('../openConection');
 
-export async function insertUser(name, email, country) {
+async function insertUser(name, email, country) {
     const db = openDBConnection();
     try {
-        let query = await db.query('INSER INTO users VALUES (?, ?, ?, ?, ?)', 
+        let query = await db.query('INSERT INTO users VALUES (?, ?, ?, ?, ?)', 
         [
             email, 
             name, 
@@ -31,7 +31,7 @@ export async function insertUser(name, email, country) {
     }  
 }
 
-export async function updateUser(name, email, country) {
+async function updateUser(name, email, country) {
     const db = openDBConnection();
     try {
         let query = await db.query(`UPDATE users 
@@ -64,3 +64,84 @@ export async function updateUser(name, email, country) {
         await db.close();
     }  
 }
+
+async function getAllUsers() {
+    const db = openDBConnection();
+    try {
+        let query = await db.query('SELECT * FROM users');
+        if(query) {
+            return {
+                succesfull: true,
+                data: query
+            }
+        } else {
+            return {
+                succesfull: false
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            succesfull: false, 
+            error: err
+        }
+    } finally {
+        await db.close();
+    }
+}
+
+async function getUser(email) {
+    const db = openDBConnection();
+    try {
+        let query = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        if(query) {
+            return {
+                succesfull: true,
+                data: query
+            }
+        } else {
+            return {
+                succesfull: false
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            succesfull: false, 
+            error: err
+        }
+    } finally {
+        await db.close();
+    }
+}
+
+async function deleteUser(email) {
+    const db = openDBConnection();
+    try {
+        let query = await db.query('DELETE FROM users WHERE email = ?', [email]);
+        if(query) {
+            return {
+                succesfull: true,
+                data: query
+            }
+        } else {
+            return {
+                succesfull: false
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            succesfull: false, 
+            error: err
+        }
+    } finally {
+        await db.close();
+    }
+}
+
+module.exports.insertUser = insertUser;
+module.exports.updateUser = updateUser;
+module.exports.getAllUsers = getAllUsers;
+module.exports.getUser = getUser;
+module.exports.deleteUser = deleteUser;
