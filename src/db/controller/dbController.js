@@ -115,7 +115,33 @@ async function getUser(email) {
     }
 }
 
+async function deleteUser(email) {
+    const db = openDBConnection();
+    try {
+        let query = await db.query('DELETE FROM users WHERE email = ?', [email]);
+        if(query) {
+            return {
+                succesfull: true,
+                data: query
+            }
+        } else {
+            return {
+                succesfull: false
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            succesfull: false, 
+            error: err
+        }
+    } finally {
+        await db.close();
+    }
+}
+
 module.exports.insertUser = insertUser;
 module.exports.updateUser = updateUser;
 module.exports.getAllUsers = getAllUsers;
 module.exports.getUser = getUser;
+module.exports.deleteUser = deleteUser;

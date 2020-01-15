@@ -3,7 +3,7 @@ require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 
-const { insertUser, updateUser, getAllUsers, getUser } = require('./db/controller/dbController');
+const { insertUser, updateUser, getAllUsers, getUser, deleteUser } = require('./db/controller/dbController');
 
 var app = express();
 
@@ -43,6 +43,11 @@ app.get('/users', async (req, res) => {
 
 app.get('/users/:email', async (req, res) => {
     const response = await getUser(req.params.email);
+    res.json(response);
+});
+
+app.delete('/users/:email', async (req, res) => {
+    const response = await deleteUser(req.params.email);
     res.json(response);
 });
 
