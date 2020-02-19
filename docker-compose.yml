@@ -5,18 +5,13 @@ services:
     ports: 
       - "${PORT}:${PORT}"
     depends_on: 
-      - db
-  db:
-    image: mysql:5.7
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo:latest
     restart: always
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '${MYSQL_EXTERNAL_PORT}:${MYSQL_PORT}'
+      - '${MONGO_EXTERNAL_PORT}:${MONGO_PORT}'
     volumes:
-      - ../rest_data:/var/lib/mysql
+      - ../mongo_data:/data/db

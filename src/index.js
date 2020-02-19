@@ -2,8 +2,9 @@ require('dotenv').config();
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
-const { insertUser, updateUser, getAllUsers, getUser, deleteUser } = require('./db/controller/dbController');
+const { insertUser, updateUser, getAllUsers, getUser, deleteUser } = require('./db/controller/mongoController');
 
 var app = express();
 
@@ -13,6 +14,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+mongoose.connect('mongodb://mongo:27017/tel335_mongo_db', {
+    useNewUrlParser: true, 
+    useCreateIndex: true, 
+    useUnifiedTopology: true
+});
+
+const connection = mongoose.connection;
+
+connection.once('open', () => {
+    console.log('Conectados a MongoDB');
+});
 
 /**
  * GET --> Obtener data
